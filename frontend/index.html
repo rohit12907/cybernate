@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>CyberMate — Agentic SOC</title>
+
+  <!-- Google Fonts (same as original HTML) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <meta
+    name="description"
+    content="CyberMate Agentic SOC Dashboard - Threat Detection, Analysis, Response and Protection"
+  />
+
+  <meta
+    name="keywords"
+    content="CyberMate, SOC, Cyber Security, Threat Detection, Security Dashboard, Agentic AI"
+  />
+
+  <meta name="author" content="CyberMate Team" />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#00d4ff" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CyberMate SOC Dashboard" />
+  <meta
+    property="og:description"
+    content="Agentic Security Operations Center"
+  />
+  <meta property="og:type" content="website" />
+
+  <style>
+    html,
+    body,
+    #root {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #020508;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+    }
+
+    /* Loading Screen */
+    .boot-loader {
+      position: fixed;
+      inset: 0;
+      background: #020508;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .boot-logo {
+      font-family: "Orbitron", monospace;
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: 8px;
+      color: #00d4ff;
+      text-shadow:
+        0 0 10px #00d4ff,
+        0 0 20px #00d4ff,
+        0 0 40px #00d4ff;
+      animation: pulse 2s infinite;
+    }
+
+    .boot-subtitle {
+      margin-top: 10px;
+      color: #82b3d1;
+      font-family: "Share Tech Mono", monospace;
+      font-size: 12px;
+      letter-spacing: 4px;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.4;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- React Root -->
+  <div id="root">
+    <div class="boot-loader">
+      <div class="boot-logo">CYBERMATE</div>
+      <div class="boot-subtitle">
+        AGENTIC SECURITY OPERATIONS CENTER
+      </div>
+    </div>
+  </div>
+
+  <!-- React Entry -->
+  <script type="module" src="/src/main.jsx"></script>
+
+</body>
+</html>

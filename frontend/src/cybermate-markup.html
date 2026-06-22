@@ -1,0 +1,193 @@
+<div class="theme-selector">
+  <span class="theme-label">Theme</span>
+  <div class="theme-btn theme-btn-cyberpunk active" onclick="setTheme('cyberpunk')" title="Cyberpunk Blue"></div>
+  <div class="theme-btn theme-btn-matrix" onclick="setTheme('matrix')" title="Matrix Green"></div>
+  <div class="theme-btn theme-btn-crimson" onclick="setTheme('crimson')" title="Crimson Void"></div>
+  <div class="theme-btn theme-btn-solaris" onclick="setTheme('solaris')" title="Solaris Gold"></div>
+</div>
+<canvas id="bgc"></canvas>
+<div id="notif-overlay"></div>
+
+<!-- INTRO -->
+<div class="screen" id="intro">
+  <canvas id="ptc"></canvas>
+  <div class="ic">
+    <div id="cmt">CYBERMATE</div>
+    <div class="ctag rv" id="ctag" style="opacity:0;transition:opacity 1s .4s;">AGENTIC SECURITY OPERATIONS CENTER</div>
+    <div class="cwords">
+      <div class="cw" id="w1">DETECT</div>
+      <div class="cw" id="w2">ANALYZE</div>
+      <div class="cw" id="w3">RESPOND</div>
+      <div class="cw" id="w4">PROTECT</div>
+    </div>
+    <button id="ssbtn" onclick="goMenu()">▶ START SYSTEM</button>
+  </div>
+  <div id="sl"></div>
+</div>
+
+<!-- MENU -->
+<div class="screen hidden" id="menu">
+  <div class="mh"><div class="mt">CYBERMATE</div><div class="ms">// SELECT OPERATION MODE</div><div id="backend-status" class="backend-status connecting"><span></span> BACKEND: CONNECTING</div></div>
+  <div class="mg">
+    <div class="mc d" onclick="startSim('auto')">
+      <div class="mi"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" stroke="#ff3366" stroke-width="1.2" opacity=".3"/><path d="M34 6L54 17L54 37C54 50 46 60 34 64C22 60 14 50 14 37L14 17Z" stroke="#ff3366" stroke-width="1.5" fill="rgba(255,51,102,.07)"/><path d="M34 18L30 32H36L28 50L48 30H39L43 18Z" fill="#ff3366" opacity=".9"/><circle cx="34" cy="34" r="3" fill="#ff3366"><animate attributeName="r" values="3;7;3" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/></circle></svg></div>
+      <div class="mct">SIMULATE BRUTE FORCE</div>
+      <div class="mcd">Trigger a synthetic attack. Watch the 4-agent pipeline detect, analyze and neutralize in real-time.</div>
+    </div>
+    <div class="mc s" onclick="goNL()">
+      <div class="mi"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" stroke="#00ff88" stroke-width="1.2" opacity=".3"/><path d="M34 6L54 16L54 36C54 50 44 60 34 64C24 60 14 50 14 36L14 16Z" stroke="#00ff88" stroke-width="1.5" fill="rgba(0,255,136,.07)"/><path d="M24 34L30 42L44 26" stroke="#00ff88" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="34" r="5" fill="#00ff88" opacity=".2"><animate attributeName="r" values="5;14;5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;0;.2" dur="2s" repeatCount="indefinite"/></circle></svg></div>
+      <div class="mct">NORMAL LOG SCAN</div>
+      <div class="mcd">Run a full system health check. CyberMate scans logs and confirms operational security status.</div>
+    </div>
+    <div class="mc rs" onclick="doReset()">
+      <div class="mi"><svg viewBox="0 0 68 68" fill="none"><circle cx="34" cy="34" r="32" stroke="#4a7a96" stroke-width="1.2" opacity=".3"/><circle cx="34" cy="34" r="24" stroke="#4a7a96" stroke-width="1.5" fill="none"/><path d="M14 34A20 20 0 1 1 18 46" stroke="#4a7a96" stroke-width="2.5" stroke-linecap="round"/><polygon points="12,38 22,38 17,28" fill="#4a7a96"/><circle cx="34" cy="34" r="5" stroke="#4a7a96" stroke-width="1.5" fill="none"/><line x1="34" y1="29" x2="34" y2="34" stroke="#4a7a96" stroke-width="2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 34 34" to="360 34 34" dur="4s" repeatCount="indefinite"/></line></svg></div>
+      <div class="mct">RESET SYSTEM</div>
+      <div class="mcd">Clear simulation data and reinitialize all agents and monitoring threads to default state.</div>
+    </div>
+  </div>
+</div>
+
+<!-- NORMAL LOG -->
+<div class="screen hidden" id="nlscr">
+  <div class="sc">
+    <div class="sct">// SCANNING SYSTEM LOGS</div>
+    <div class="sbo">
+      <div class="sbi" id="sbi"></div>
+    </div>
+    <div class="sl2" id="slg"></div>
+    <div class="sr" id="sr">
+
+      <!-- DYNAMIC SVG — color changes with severity -->
+      <div class="sw" id="nlSvgWrap">
+        <svg id="nlSvg" viewBox="0 0 110 110" fill="none">
+          <path
+            id="nlShield"
+            d="M55 4L92 18L92 52C92 74 76 92 55 100C34 92 18 74 18 52L18 18Z"
+            stroke="#00ff88"
+            stroke-width="2"
+            fill="rgba(0,255,136,.07)"
+          />
+          <path
+            id="nlCheck"
+            d="M38 55L49 67L72 44"
+            stroke="#00ff88"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <animate
+              attributeName="stroke-dasharray"
+              values="0,60;60,0"
+              dur=".9s"
+              fill="freeze"
+            />
+          </path>
+          <!-- Pulse ring — color matches severity -->
+          <circle
+            id="nlPulse"
+            cx="55"
+            cy="55"
+            r="7"
+            fill="#00ff88"
+            opacity=".2"
+          >
+            <animate attributeName="r" values="7;18;7" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".2;0;.2" dur="2s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- DYNAMIC THREAT HEADLINE -->
+      <div class="rl" id="nlThreat">SCANNING...</div>
+
+      <!-- THREAT DETAIL — shows IP + summary when threat found, hidden otherwise -->
+      <div
+        id="nlDetail"
+        style="
+          display:none;
+          font-family:'Share Tech Mono',monospace;
+          font-size:11px;
+          color:var(--dm);
+          margin: 8px auto 16px;
+          max-width:420px;
+          text-align:left;
+          background:rgba(255,51,102,.06);
+          border:1px solid rgba(255,51,102,.2);
+          border-radius:6px;
+          padding:10px 14px;
+          line-height:1.8;
+        "
+      >
+        <span id="nlDetailIp" style="color:var(--r)"></span><br/>
+        <span id="nlDetailSummary" style="color:var(--tx)"></span>
+      </div>
+
+      <!-- RISK + STATUS BADGES -->
+      <div class="rb">
+        <div class="ba rl2" id="nlRisk">RISK: UNKNOWN</div>
+        <div class="ba ro"  id="nlStatus">STATUS: SCANNING</div>
+      </div>
+
+      <!-- ACTION STEPS — hidden until threat found -->
+      <div
+        id="nlActions"
+        style="
+          display:none;
+          margin:12px auto 0;
+          max-width:380px;
+          text-align:left;
+        "
+      >
+        <div style="font-family:'Orbitron',monospace;font-size:9px;letter-spacing:.2em;color:var(--dm);margin-bottom:6px;">
+          RECOMMENDED ACTIONS
+        </div>
+        <ol
+          id="nlActionList"
+          style="
+            font-family:'Share Tech Mono',monospace;
+            font-size:11px;
+            color:var(--tx);
+            line-height:1.9;
+            padding-left:18px;
+          "
+        ></ol>
+      </div>
+
+      <button class="nlb" onclick="showScr('menu')" style="margin-top:20px;">
+        ← RETURN TO MENU
+      </button>
+
+    </div>
+  </div>
+</div>
+<!-- SIMULATION -->
+<div class="screen hidden" id="sim">
+  <canvas id="pipe-canvas"></canvas>
+  <div id="pipe-bg"></div>
+  <!-- Nodes will be injected here -->
+  <div id="stage-panel" style="display:none;position:fixed;inset:0;z-index:50;background:rgba(2,5,8,.96);display:none;align-items:center;justify-content:center;">
+    <div class="si" id="si"></div>
+  </div>
+  <div id="prog">STAGE <span id="pgn">1</span> / 10</div>
+  <div id="abar"><div id="abf"></div></div>
+  <div id="next-bar">
+    <span id="next-hint">▶ AUTO-ADVANCE IN <span id="next-count">5</span>s</span>
+    <button id="next-btn" onclick="nextStage()">NEXT STAGE →</button>
+  </div>
+</div>
+
+<!-- SUCCESS — Full-screen 3D Pipeline -->
+<div class="screen hidden" id="succ">
+  <div class="suc-top">
+    <div class="suc-badge">✓ AUTONOMOUS DEFENSE WORKFLOW COMPLETED</div>
+    <div class="suc-status"><span class="suc-dot"></span> SYSTEM: OPERATIONAL</div>
+  </div>
+  <div id="final-pipe">
+    <div id="fp-scene">
+      <canvas id="fp-canvas"></canvas>
+    </div>
+  </div>
+  <div class="suc-bot">
+    <button class="suc-btn" onclick="leaveSuccess()">← BACK TO MAIN MENU</button>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+{
+  "abuseipdb": {
+    "ipAddress": "185.220.101.23",
+    "abuseConfidenceScore": 94,
+    "countryCode": "RO",
+    "countryName": "Romania",
+    "isp": "Contabo GmbH",
+    "domain": "contabo.de",
+    "totalReports": 156,
+    "lastReportedAt": "2026-06-15T22:30:00Z"
+  },
+  "nvd": {
+    "resultsPerPage": 1,
+    "vulnerabilities": [
+      {
+        "cve": {
+          "id": "CVE-2024-6387",
+          "sourceIdentifier": "nvd@nist.gov",
+          "published": "2024-07-01T13:15:00Z",
+          "lastModified": "2024-07-15T13:15:00Z",
+          "vulnStatus": "Analyzed",
+          "descriptions": [
+            {
+              "lang": "en",
+              "value": "A signal handler race condition in OpenSSH server (sshd) allows remote attackers to execute arbitrary code as root."
+            }
+          ],
+          "metrics": {
+            "cvssMetricV31": [
+              {
+                "cvssData": {
+                  "version": "3.1",
+                  "attackVector": "NETWORK",
+                  "attackComplexity": "HIGH",
+                  "privilegesRequired": "NONE",
+                  "userInteraction": "NONE",
+                  "scope": "CHANGED",
+                  "confidentialityImpact": "HIGH",
+                  "integrityImpact": "HIGH",
+                  "availabilityImpact": "HIGH",
+                  "baseScore": 8.1,
+                  "baseSeverity": "HIGH"
+                }
+              }
+            ]
+          },
+          "weaknesses": [
+            {
+              "description": [{"value": "CWE-362: Race Condition"}]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "otx": {
+    "pulse_info": {
+      "count": 3,
+      "pulses": [
+        {
+          "id": "pulse_123",
+          "name": "SSH Brute Force Campaign 2026",
+          "description": "Ongoing SSH brute force campaign targeting small business servers",
+          "tags": ["ssh", "brute-force", "scanning"],
+          "targeted_countries": ["IN", "US", "GB"],
+          "created": "2026-06-10T00:00:00Z"
+        },
+        {
+          "id": "pulse_456",
+          "name": "Contabo Abuse Activity",
+          "description": "Multiple abuse reports from Contabo GmbH IP range",
+          "tags": ["abuse", "hosting", "spam"],
+          "created": "2026-06-12T00:00:00Z"
+        }
+      ]
+    }
+  },
+  "mock_groq_response": {
+    "threat_type": "brute_force",
+    "severity": "high",
+    "confidence": 0.94,
+    "summary": "Someone tried to log into your server 47 times from an IP in Romania between 2 AM and 3 AM. They tried different usernames each time. None of the attempts succeeded. This IP has a bad reputation score of 94 out of 100.",
+    "action_steps": [
+      "Change your SSH password to a stronger one",
+      "Turn on two-factor authentication for all accounts",
+      "Block the IP address 185.220.101.23 in your firewall"
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+[OK] Database ready. CyberMate backend running.
+INFO:     127.0.0.1:60071 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60072 - "POST /api/log HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60073 - "GET /api/threats HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:54456 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59810 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+[OK] Database ready. CyberMate backend running.
+INFO:     127.0.0.1:50737 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61620 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62649 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58139 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64748 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64748 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52827 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:62158 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51402 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49394 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:64970 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49237 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:56753 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60455 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:49169 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56132 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58512 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53878 - "POST /api/log HTTP/1.1" 200 OK
+[WARN] Agent pipeline at http://localhost:8001 is unreachable: HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /api/analyze (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8001): Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it")). Using local fallback analysis.
+INFO:     127.0.0.1:64024 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64027 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62009 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59214 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59216 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59218 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53115 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59137 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59139 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60157 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60159 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60161 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60163 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60165 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65095 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62200 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65254 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57798 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57479 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57481 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55662 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65130 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65132 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62115 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57888 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49676 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56398 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64657 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59633 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57866 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52626 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62828 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50602 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61217 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55240 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63404 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53443 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53387 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56244 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60427 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61375 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58934 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64160 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54950 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60479 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61452 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55435 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52087 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63094 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53177 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61968 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50062 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53027 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55800 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59051 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51319 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59104 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52295 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60784 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52318 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54913 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50559 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53347 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58813 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52044 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54663 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55505 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49820 - "GET /api/threats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET /api/health HTTP/1.1" 200 OK

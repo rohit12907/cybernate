@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CyberMate — Autonomous Agentic SOC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#020810;font-family:'Inter',sans-serif;color:#d0e0f0;user-select:none}
+
+body{background:radial-gradient(ellipse at 30% 20%,#0a1428 0%,#020810 70%);display:flex;align-items:center;justify-content:center}
+
+/* === BG GRID === */
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.grid-bg .gx{position:absolute;background:rgba(0,180,255,0.03)}.grid-bg .gh{width:100%;height:1px;left:0;animation:ghR 8s linear infinite}
+.grid-bg .gv{height:100%;width:1px;top:0;animation:gvR 12s linear infinite}
+@keyframes ghR{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+@keyframes gvR{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+.grid-bg .gh:nth-child(1){top:10%;animation-delay:0s}.grid-bg .gh:nth-child(2){top:30%;animation-delay:2s}
+.grid-bg .gh:nth-child(3){top:50%;animation-delay:4s}.grid-bg .gh:nth-child(4){top:70%;animation-delay:6s}
+.grid-bg .gh:nth-child(5){top:90%;animation-delay:1s}
+.grid-bg .gv:nth-child(6){left:15%;animation-delay:0s}.grid-bg .gv:nth-child(7){left:35%;animation-delay:3s}
+.grid-bg .gv:nth-child(8){left:55%;animation-delay:6s}.grid-bg .gv:nth-child(9){left:75%;animation-delay:9s}
+.grid-bg .gv:nth-child(10){left:95%;animation-delay:1.5s}
+
+/* === PARTICLES === */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.prt{position:absolute;border-radius:50%;background:rgba(0,180,255,0.2);animation:prtF linear infinite}
+@keyframes prtF{0%{transform:translateY(100vh)scale(0);opacity:0}10%{opacity:1}90%{opacity:0.6}100%{transform:translateY(-10vh)scale(1);opacity:0}}
+
+/* === WRAPPER === */
+.w{position:relative;z-index:1;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+
+/* === LANDING === */
+.land{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:10;background:radial-gradient(ellipse at center,#060e1e 0%,#020810 80%)}
+.land.hide{opacity:0;pointer-events:none;transition:opacity 0.8s}
+.land svg.logo-main{width:320px;height:80px;opacity:0;transform:scale(0.5);animation:lRev 1.5s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes lRev{0%{opacity:0;transform:scale(0.5)translateY(30px)}100%{opacity:1;transform:scale(1)translateY(0)}}
+.land .lt{font-size:0.85rem;color:#5a8aaa;letter-spacing:4px;margin-top:6px;opacity:0;animation:fUp 1s 0.6s forwards}
+.land .ls{display:flex;gap:28px;margin-top:22px;opacity:0;animation:fUp 1s 1.2s forwards}
+.land .ls span{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:3px;animation:lP 2s infinite}
+.land .ls span:nth-child(1){color:#ef4444;animation-delay:1.5s}
+.land .ls span:nth-child(2){color:#eab308;animation-delay:2s}
+.land .ls span:nth-child(3){color:#00d4ff;animation-delay:2.5s}
+.land .ls span:nth-child(4){color:#22c55e;animation-delay:3s}
+@keyframes lP{0%,100%{opacity:1}50%{opacity:0.3}}
+.land .lb{margin-top:40px;opacity:0;animation:fUp 1s 2s forwards}
+.land .lb button{padding:16px 50px;border:none;border-radius:10px;font-family:'Orbitron',sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:3px;cursor:pointer;background:linear-gradient(135deg,#00d4ff,#7b61ff);color:#020810;box-shadow:0 0 40px rgba(0,212,255,0.2);transition:all 0.3s}
+.land .lb button:hover{transform:translateY(-3px)scale(1.02);box-shadow:0 0 60px rgba(0,212,255,0.3)}
+.land .init{margin-top:14px;font-size:0.6rem;color:#3a5a7a;font-family:'JetBrains Mono',monospace;letter-spacing:2px;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes fUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* === MAIN MENU === */
+.mm{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:9;padding:30px}
+.mm.show{display:flex}
+.mm .mmt{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:4px;margin-bottom:4px;background:linear-gradient(135deg,#00d4ff,#7b61ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.mm .mms{color:#5a7a9a;font-size:0.65rem;letter-spacing:2px;margin-bottom:28px}
+.mm .mcards{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.mc{width:280px;height:250px;border-radius:20px;padding:28px;cursor:pointer;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);background:rgba(6,16,30,0.6);border:1px solid rgba(0,180,255,0.06);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.mc::before{content:'';position:absolute;inset:-2px;border-radius:22px;background:linear-gradient(135deg,var(--c1),var(--c2),var(--c1));background-size:300% 300%;opacity:0;transition:opacity 0.5s;z-index:-1;animation:bSpin 3s linear infinite}
+@keyframes bSpin{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.mc:hover::before{opacity:1}.mc:hover{transform:translateY(-6px)scale(1.02)}
+.mc .mci{width:52px;height:52px;margin-bottom:12px}
+.mc .mcn{font-size:1rem;font-weight:700;letter-spacing:1px}
+.mc .mcd{font-size:0.62rem;color:#5a7a9a;margin-top:5px;line-height:1.4;max-width:220px}
+.mc.att{--c1:#ef4444;--c2:#dc2626}.mc.att .mcn{color:#ef4444}
+.mc.nor{--c1:#22c55e;--c2:#059669}.mc.nor .mcn{color:#22c55e}
+.mc.rst{--c1:#6b7280;--c2:#4b5563}.mc.rst .mcn{color:#9ca3af}
+
+/* === MAIN LAYOUT === */
+.main{position:absolute;inset:0;display:none;z-index:5}
+.main.show{display:flex}
+.main .ml{width:280px;min-width:280px;background:rgba(4,10,22,0.4);border-right:1px solid rgba(0,180,255,0.04);display:flex;flex-direction:column;padding:14px 10px;overflow:hidden;flex-shrink:0}
+.main .ml .mlt{font-size:0.55rem;color:#3a5a7a;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding:0 6px}
+.main .ml .mln{overflow-y:auto;flex:1;padding-right:4px}
+.main .ml .mln::-webkit-scrollbar{width:2px}
+.main .ml .mln::-webkit-scrollbar-thumb{background:rgba(0,180,255,0.05);border-radius:1px}
+.main .mr{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;min-width:0}
+
+/* === ARCHITECTURE NODE IN LEFT === */
+.arch-node{display:flex;align-items:center;gap:8px;padding:6px 8px;margin:2px 0;border-radius:8px;background:rgba(0,20,40,0.15);border:1px solid rgba(0,180,255,0.03);opacity:0;transform:translateX(-20px);transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.arch-node.show{opacity:1;transform:translateX(0)}
+.arch-node .ad{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;font-size:0.65rem}
+.arch-node .ad svg{width:18px;height:18px}
+.arch-node .ad.green{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);color:#22c55e}
+.arch-node .ad.green::after{content:'✓';position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#22c55e;color:#020810;font-size:0.35rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+.arch-node .al{font-size:0.6rem;color:#7a9aba;font-weight:500;line-height:1.2;flex:1}
+.arch-node .al .al-sub{font-size:0.5rem;color:#4a6a8a;font-weight:400}
+
+.arch-conn{width:100%;height:12px;position:relative;opacity:0;transition:opacity 1s}
+.arch-conn.show{opacity:1}
+.arch-conn .ac-line{width:100%;height:1px;background:rgba(0,180,255,0.08);position:absolute;top:50%;transform:translateY(-50%)}
+.arch-conn .ac-glow{position:absolute;top:50%;left:0;width:0%;height:1px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);transform:translateY(-50%);transition:width 1.5s cubic-bezier(0.34,1.56,0.64,1)}
+.arch-conn .ac-glow.active{width:100%}
+.arch-conn .ac-dot{position:absolute;top:50%;left:0;width:4px;height:4px;border-radius:50%;background:#00d4ff;box-shadow:0 0 12px #00d4ff;transform:translateY(-50%);animation:dotMove 2s linear infinite}
+@keyframes dotMove{0%{left:0}100%{left:100%}}
+
+/* === STAGE CARD === */
+.st-card{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;max-width:680px;padding:10px 20px;animation:stIn 0.8s cubic-bezier(0.34,1.56,0.64,1)}
+.st-card.show{display:flex}
+.st-card.exit{animation:stOut 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards}
+@keyframes stIn{0%{opacity:0;transform:scale(0.7)translateY(30px)}100%{opacity:1;transform:scale(1)translateY(0)}}
+@keyframes stOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(0.85)translateX(30px)}}
+
+.st-card .stl{width:100px;height:100px;margin-bottom:12px;position:relative;animation:stFloat 4s ease-in-out infinite}
+@keyframes stFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.st-card .stl svg{width:100px;height:100px}
+.st-card .stl .glow-ring{position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(0,180,255,0.06);animation:ringP 3s ease-in-out infinite}
+@keyframes ringP{0%,100%{transform:scale(1);opacity:0.3}50%{transform:scale(1.08);opacity:0.6}}
+
+.st-card h2{font-size:1.5rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:2px;font-family:'Orbitron',sans-serif}
+.st-card .st-sub{color:#5a7a9a;font-size:0.7rem;letter-spacing:2px;margin-bottom:10px}
+
+.st-card .st-sections{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;max-width:600px;margin:6px 0}
+.st-card .st-sec{background:rgba(0,15,35,0.3);border-radius:10px;padding:10px 12px;border:1px solid rgba(0,180,255,0.04);text-align:left}
+.st-card .st-sec .ss-h{font-size:0.55rem;color:#4a6a8a;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.st-card .st-sec .ss-b{font-size:0.78rem;color:#b0c8e0;line-height:1.4}
+
+.st-card .st-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;max-width:520px;margin:6px 0}
+.st-card .st-item{background:rgba(0,15,35,0.25);border-radius:8px;padding:8px 12px;border:1px solid rgba(0,180,255,0.03);text-align:left}
+.st-card .st-item .si-l{font-size:0.55rem;color:#4a6a8a;text-transform:uppercase;letter-spacing:0.5px}
+.st-card .st-item .si-v{font-size:0.85rem;font-weight:600;color:#e0ecf8;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.st-card .st-item .si-v.sr{color:#ef4444}.st-card .st-item .si-v.sg{color:#22c55e}
+.st-card .st-item .si-v.sc{color:#00d4ff}.st-card .st-item .si-v.sy{color:#eab308}
+.st-card .st-item.col{grid-column:1/-1}
+
+.st-card .st-badges{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.st-bd{display:inline-block;padding:2px 12px;border-radius:10px;font-size:0.55rem;font-weight:600;letter-spacing:0.5px}
+.st-bd.br{background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.12)}
+.st-bd.bg{background:rgba(34,197,94,0.08);color:#22c55e;border:1px solid rgba(34,197,94,0.12)}
+.st-bd.bc{background:rgba(0,212,255,0.08);color:#00d4ff;border:1px solid rgba(0,212,255,0.12)}
+.st-bd.by{background:rgba(234,179,8,0.08);color:#eab308;border:1px solid rgba(234,179,8,0.12)}
+
+.st-card .st-act{margin-top:12px}
+.st-card .st-act button{padding:10px 28px;border:none;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;letter-spacing:0.5px;transition:all 0.3s}
+
+/* === PHONE === */
+.phone-wrap{display:flex;justify-content:center;align-items:center;margin:8px 0;width:100%}
+.phone{width:240px;height:420px;border-radius:30px;padding:10px;background:linear-gradient(135deg,#1a1a2e,#12121e);border:2px solid #2a2a4a;box-shadow:0 20px 80px rgba(0,0,0,0.6),0 0 60px rgba(0,180,255,0.03);position:relative;animation:phFloat 5s ease-in-out infinite}
+@keyframes phFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.phone .ps{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:60px;height:4px;background:#2a2a4a;border-radius:2px;z-index:2}
+.phone .psc{width:100%;height:100%;border-radius:24px;overflow:hidden;background:#08081a;position:relative}
+.phone .psc .ps-time{text-align:center;font-size:0.45rem;color:#5a5a7a;padding:8px 0 4px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
+.phone .notif{background:rgba(0,20,40,0.9);border:1px solid rgba(0,180,255,0.06);border-radius:10px;padding:8px 10px;margin:4px 8px;animation:ntIn 0.5s ease-out;position:relative}
+@keyframes ntIn{from{opacity:0;transform:translateX(30px)scale(0.9)}to{opacity:1;transform:translateX(0)scale(1)}}
+.phone .notif .nt-app{font-size:0.45rem;color:#4a6a8a;text-transform:uppercase;letter-spacing:0.5px}
+.phone .notif .nt-title{font-size:0.6rem;font-weight:600;color:#e0e8f0;margin:2px 0}
+.phone .notif .nt-body{font-size:0.5rem;color:#7a8aaa;line-height:1.3}
+.phone .notif .nt-time{font-size:0.4rem;color:#3a5a6a;text-align:right;margin-top:2px}
+
+/* === COMMUNICATION LAYOUT === */
+.comm-layout{display:flex;gap:10px;align-items:center;justify-content:center;width:100%;max-width:800px;flex-wrap:wrap}
+.comm-layout .cl-info{flex:1;min-width:200px;text-align:left}
+.comm-layout .cl-info .ci-title{font-family:'Orbitron',sans-serif;font-size:1.1rem;color:#00d4ff;margin-bottom:4px}
+.comm-layout .cl-info .ci-sub{color:#5a7a9a;font-size:0.7rem;letter-spacing:1px;margin-bottom:8px}
+.comm-layout .cl-info .ci-items{display:flex;flex-direction:column;gap:4px}
+.comm-layout .cl-info .ci-item{padding:6px 10px;border-radius:6px;font-size:0.65rem;color:#8aaaca;border-left:2px solid var(--ac,#00d4ff);background:rgba(0,15,35,0.2)}
+.comm-layout .cl-info .ci-item .ci-label{font-size:0.5rem;color:#4a6a8a;text-transform:uppercase;letter-spacing:0.5px}
+
+/* === FINAL === */
+.final{position:absolute;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#060e1e 0%,#020810 90%);flex-direction:column}
+.final.show{display:flex}
+.final .ft{font-family:'Orbitron',sans-serif;font-size:1.3rem;color:#22c55e;letter-spacing:3px;margin-bottom:6px;text-shadow:0 0 30px rgba(34,197,94,0.2)}
+.final .fsub{font-size:0.65rem;color:#4a7a6a;letter-spacing:2px;margin-bottom:12px}
+.final .farch{display:flex;align-items:center;justify-content:center;gap:3px;flex-wrap:wrap;max-width:1000px;margin:6px 0}
+.final .fn{display:flex;flex-direction:column;align-items:center;opacity:0;transform:scale(0.3);transition:all 0.6s cubic-bezier(0.34,1.56,0.64,1)}
+.final .fn.show{opacity:1;transform:scale(1)}
+.final .fn .fnb{width:60px;height:60px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(5,15,35,0.6);border:2px solid rgba(0,180,255,0.1);transition:all 0.5s;position:relative}
+.final .fn .fnb svg{width:32px;height:32px}
+.final .fn .fnb.done{border-color:#22c55e;background:rgba(34,197,94,0.06);box-shadow:0 0 20px rgba(34,197,94,0.1)}
+.final .fn .fnb.done::after{content:'✓';position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:#22c55e;color:#020810;font-size:0.45rem;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(34,197,94,0.4)}
+.final .fn .fnl{font-size:0.45rem;color:#4a6a8a;margin-top:3px;text-align:center;max-width:60px;line-height:1.2}
+.final .farw{width:16px;height:2px;position:relative;flex-shrink:0;opacity:0;transition:opacity 1s}
+.final .farw.show{opacity:1}
+.final .farw .fat{width:100%;height:1px;background:rgba(0,180,255,0.06);position:relative;overflow:hidden}
+.final .farw .faf{position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,#00d4ff,transparent);animation:faGl 1.5s linear infinite}
+@keyframes faGl{0%{left:-100%}100%{left:100%}}
+.final .farw .fah{position:absolute;right:-1px;top:-3px;border:3px solid transparent;border-left-color:rgba(0,180,255,0.08)}
+.final .finfo{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+.final .finfo .fi{text-align:center;padding:5px 12px;border-radius:6px;background:rgba(34,197,94,0.02);border:1px solid rgba(34,197,94,0.05)}
+.final .finfo .fi .fi-l{font-size:0.5rem;color:#4a7a6a;letter-spacing:0.5px}
+.final .finfo .fi .fi-v{font-size:0.75rem;font-weight:700;color:#22c55e;font-family:'JetBrains Mono',monospace}
+.final .fmsg{color:#5a8a7a;font-size:0.6rem;margin-top:8px;letter-spacing:0.5px;text-align:center;max-width:500px;line-height:1.4}
+.final .fback{margin-top:10px}
+
+/* === SCAN === */
+.scan-ol{position:fixed;inset:0;z-index:15;display:none;align-items:center;justify-content:center;background:#020810;flex-direction:column}
+.scan-ol.show{display:flex}
+.scan-ol .sa{width:80px;height:80px;border:3px solid rgba(0,212,255,0.08);border-top-color:#00d4ff;border-radius:50%;animation:sSpin 1s linear infinite;margin-bottom:16px}
+@keyframes sSpin{to{transform:rotate(360deg)}}
+.scan-ol .st{font-family:'Orbitron',sans-serif;font-size:0.75rem;color:#5a8aaa;letter-spacing:3px;animation:sP 1.5s infinite}
+@keyframes sP{0%,100%{opacity:0.6}50%{opacity:1}}
+
+/* === NORMAL SUCCESS === */
+.ns{position:fixed;inset:0;z-index:16;display:none;align-items:center;justify-content:center;flex-direction:column;background:#020810}
+.ns.show{display:flex}
+.ns .nss{width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,0.06);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(34,197,94,0.08);animation:nsG 2s ease-in-out infinite;margin-bottom:14px}
+.ns .nss svg{width:48px;height:48px}
+@keyframes nsG{0%,100%{box-shadow:0 0 20px rgba(34,197,94,0.08);transform:scale(1)}50%{box-shadow:0 0 50px rgba(34,197,94,0.12);transform:scale(1.05)}}
+.ns h2{font-family:'Orbitron',sans-serif;font-size:1.3rem;color:#22c55e;margin-bottom:4px;letter-spacing:1px}
+.ns .nst{display:flex;gap:16px;margin:10px 0 16px}
+.ns .nst .nsv{text-align:center;padding:8px 18px;border-radius:8px;background:rgba(34,197,94,0.03);border:1px solid rgba(34,197,94,0.06)}
+.ns .nst .nsv .nl{font-size:0.55rem;color:#5a8a6a;letter-spacing:0.5px}
+.ns .nst .nsv .nv{font-size:0.9rem;font-weight:700;color:#22c55e;margin-top:2px}
+
+/* === RESPONSIVE === */
+@media(max-width:1000px){
+  .main .ml{width:200px;min-width:200px}
+  .st-card h2{font-size:1.2rem}
+  .st-card .st-sections{grid-template-columns:1fr}
+  .st-card .stl{width:76px;height:76px}
+  .st-card .stl svg{width:76px;height:76px}
+  .land svg.logo-main{width:240px}
+  .mc{width:220px;height:210px}
+  .final .fn .fnb{width:48px;height:48px}
+  .final .fn .fnb svg{width:24px;height:24px}
+  .final .farw{width:10px}
+}
+@media(max-width:700px){
+  .main{flex-direction:column}
+  .main .ml{width:100%;min-width:unset;height:80px;border-right:none;border-bottom:1px solid rgba(0,180,255,0.04);padding:6px 10px;flex-direction:row}
+  .main .ml .mlt{display:none}
+  .main .ml .mln{display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;padding:0}
+  .main .ml .mln .arch-node{flex-shrink:0;padding:4px 6px;transform:translateY(-10px)}
+  .main .mr{padding:8px}
+  .st-card{padding:4px 10px}
+  .st-card h2{font-size:1rem}
+  .st-card .st-grid{grid-template-columns:1fr}
+  .phone{width:180px;height:320px}
+  .land svg.logo-main{width:180px}
+  .mc{width:160px;height:180px;padding:16px}
+  .mc .mci{width:36px;height:36px}
+  .mc .mcn{font-size:0.75rem}
+  .comm-layout{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg">
+  <div class="gx gh"></div><div class="gx gh"></div><div class="gx gh"></div><div class="gx gh"></div><div class="gx gh"></div>
+  <div class="gx gv"></div><div class="gx gv"></div><div class="gx gv"></div><div class="gx gv"></div><div class="gx gv"></div>
+</div>
+<div class="particles" id="particles"></div>
+
+<div class="w">
+  <!-- LANDING -->
+  <div class="land" id="land">
+    <svg class="logo-main" viewBox="0 0 320 80" fill="none">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="50%" stop-color="#7b61ff"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient></defs>
+      <text x="160" y="46" font-family="'Orbitron',sans-serif" font-size="36" font-weight="900" text-anchor="middle" fill="url(#lg)" letter-spacing="8">CYBERMATE</text>
+      <rect x="40" y="58" width="240" height="1" fill="rgba(0,180,255,0.1)"/>
+      <text x="160" y="72" font-family="'Inter',sans-serif" font-size="8" font-weight="300" text-anchor="middle" fill="#4a6a8a" letter-spacing="3">AGENTIC SECURITY OPERATIONS CENTER</text>
+      <circle cx="30" cy="40" r="2" fill="#00d4ff" opacity="0.2"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="290" cy="40" r="2" fill="#7b61ff" opacity="0.2"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+    </svg>
+    <div class="lt">Autonomous Agentic Cyber Defense Platform</div>
+    <div class="ls"><span>Detect.</span><span>Analyze.</span><span>Respond.</span><span>Protect.</span></div>
+    <div class="init">Initializing Autonomous Defense Platform...</div>
+    <div class="lb"><button onclick="startSystem()">⟡ START SYSTEM</button></div>
+  </div>
+
+  <!-- MAIN MENU -->
+  <div class="mm" id="mm">
+    <div class="mmt">CYBERMATE SOC</div>
+    <div class="mms">Select Simulation Mode</div>
+    <div class="mcards">
+      <div class="mc att" onclick="selectMode()">
+        <svg class="mci" viewBox="0 0 52 52"><rect x="10" y="10" width="32" height="32" rx="6" fill="none" stroke="#ef4444" stroke-width="1.2" opacity="0.3"/><path d="M26 14v12l8 4" stroke="#ef4444" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="26" cy="26" r="10" fill="none" stroke="#ef4444" stroke-width="1.2" opacity="0.4"/><circle cx="26" cy="26" r="14" fill="none" stroke="#ef4444" stroke-width="0.5" opacity="0.15"/></svg>
+        <div class="mcn">Simulate Brute Force</div>
+        <div class="mcd">Complete agentic pipeline simulation with real-time attack detection and automated response</div>
+      </div>
+      <div class="mc nor" onclick="normalLog()">
+        <svg class="mci" viewBox="0 0 52 52"><path d="M26 8l16 8v12c0 8-6.4 15.6-16 18-9.6-2.4-16-10-16-18V16l16-8z" fill="none" stroke="#22c55e" stroke-width="1.2"/><path d="M20 28l4 4 8-8" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="mcn">Normal Log</div>
+        <div class="mcd">Standard login activity verification with safety confirmation</div>
+      </div>
+      <div class="mc rst" onclick="resetSystem()">
+        <svg class="mci" viewBox="0 0 52 52"><path d="M26 10a16 16 0 1016 16" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M26 4l8 6-8 6" stroke="#9ca3af" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="mcn">Reset System</div>
+        <div class="mcd">Return to initial state and clear all session data</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCAN OVERLAY -->
+  <div class="scan-ol" id="scanOl"><div class="sa"></div><div class="st">Analyzing Login Activity...</div></div>
+
+  <!-- NORMAL SUCCESS -->
+  <div class="ns" id="ns">
+    <div class="nss"><svg viewBox="0 0 48 48"><path d="M24 4l16 10v14c0 9.6-6.4 18-16 20-9.6-2-16-10.4-16-20V14L24 4z" fill="none" stroke="#22c55e" stroke-width="1.5"/><path d="M18 26l4 4 8-10" stroke="#22c55e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2>Brute Force Attack Not Detected</h2>
+    <div class="nst"><div class="nsv"><div class="nl">Risk Level</div><div class="nv">Low</div></div><div class="nsv"><div class="nl">System Status</div><div class="nv">Healthy</div></div></div>
+    <button style="padding:8px 22px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);color:#22c55e;border-radius:6px;cursor:pointer;font-size:0.7rem;font-weight:600;font-family:'Inter',sans-serif" onclick="backMenu()">Return to Main Menu</button>
+  </div>
+
+  <!-- MAIN SCREEN -->
+  <div class="main" id="main">
+    <div class="ml" id="archLeft">
+      <div class="mlt"> Pipeline Architecture</div>
+      <div class="mln" id="archNodes"></div>
+    </div>
+    <div class="mr" id="stageArea"></div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="final" id="final">
+    <div class="ft"> AUTONOMOUS DEFENSE WORKFLOW COMPLETED</div>
+    <div class="fsub">All agentic pipeline stages executed successfully</div>
+    <div class="farch" id="finalArch"></div>
+    <div class="finfo" id="finalInfo"></div>
+    <div class="fmsg">CyberMate Successfully Detected, Analyzed, Responded and Reported the Threat Using Agentic AI.</div>
+    <div class="fback"><button style="padding:8px 22px;background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.12);color:#22c55e;border-radius:6px;cursor:pointer;font-size:0.65rem;font-weight:600;font-family:'Inter',sans-serif" onclick="backMenu()">← Return to Main Menu</button></div>
+  </div>
+</div>
+
+<script>
+// === SVGs for modules ===
+const LOGOS={
+  attack:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#ef4444" stroke-width="1.5" opacity="0.15"/><path d="M50 20l28 48H22l28-48z" fill="none" stroke="#ef4444" stroke-width="2"/><path d="M50 38v16" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/><circle cx="50" cy="62" r="2.5" fill="#ef4444"/><circle cx="50" cy="50" r="20" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.2"><animate attributeName="r" values="20;28;20" dur="3s" repeatCount="indefinite"/></circle></svg>`,
+  watcher:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.15"/><path d="M22 50c0-6 28-24 28-24s28 18 28 24-28 24-28 24-28-18-28-24z" fill="none" stroke="#00d4ff" stroke-width="2"/><circle cx="50" cy="50" r="8" fill="none" stroke="#00d4ff" stroke-width="1.8"/><circle cx="50" cy="50" r="3" fill="#00d4ff" opacity="0.6"><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></circle><path d="M50 20v-4M50 84v-4M20 50h-4M84 50h-4" stroke="#00d4ff" stroke-width="1" opacity="0.2"/></svg>`,
+  intel:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.1"/><circle cx="50" cy="50" r="8" fill="none" stroke="#00d4ff" stroke-width="2"/><path d="M50 42v16M42 50h16" stroke="#00d4ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/><circle cx="26" cy="30" r="4" fill="none" stroke="#7b61ff" stroke-width="1"/><circle cx="74" cy="30" r="4" fill="none" stroke="#7b61ff" stroke-width="1"/><circle cx="26" cy="70" r="4" fill="none" stroke="#7b61ff" stroke-width="1"/><circle cx="74" cy="70" r="4" fill="none" stroke="#7b61ff" stroke-width="1"/><line x1="30" y1="33" x2="44" y2="46" stroke="#7b61ff" stroke-width="0.6" opacity="0.3"/><line x1="70" y1="33" x2="56" y2="46" stroke="#7b61ff" stroke-width="0.6" opacity="0.3"/><line x1="30" y1="67" x2="44" y2="54" stroke="#7b61ff" stroke-width="0.6" opacity="0.3"/><line x1="70" y1="67" x2="56" y2="54" stroke="#7b61ff" stroke-width="0.6" opacity="0.3"/></svg>`,
+  analyzer:`<svg viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="6" fill="none" stroke="#eab308" stroke-width="1.5" opacity="0.15"/><path d="M20 70l12-20 10 8L56 36l24 34H20z" fill="none" stroke="#eab308" stroke-width="1.8" stroke-linejoin="round"/><circle cx="56" cy="40" r="4" fill="#eab308" opacity="0.4"/><path d="M50 80v-6M50 26v-6" stroke="#eab308" stroke-width="1" opacity="0.2"/><path d="M30 50l-6 2M76 50l-6-2" stroke="#eab308" stroke-width="0.8" opacity="0.15"/></svg>`,
+  a1:`<svg viewBox="0 0 100 100"><circle cx="46" cy="46" r="22" fill="none" stroke="#00d4ff" stroke-width="2"/><path d="M62 62l16 16" stroke="#00d4ff" stroke-width="2.5" stroke-linecap="round"/><circle cx="46" cy="46" r="4" fill="none" stroke="#00d4ff" stroke-width="1.5"/><path d="M46 34v4M46 54v4M34 46h4M54 46h4" stroke="#00d4ff" stroke-width="1" stroke-linecap="round" opacity="0.4"/><circle cx="46" cy="46" r="14" fill="none" stroke="#00d4ff" stroke-width="0.6" opacity="0.1"><animate attributeName="r" values="14;20;14" dur="4s" repeatCount="indefinite"/></circle></svg>`,
+  a2:`<svg viewBox="0 0 100 100"><circle cx="30" cy="50" r="10" fill="none" stroke="#a855f7" stroke-width="1.5"/><circle cx="70" cy="34" r="8" fill="none" stroke="#a855f7" stroke-width="1.5"/><circle cx="70" cy="66" r="8" fill="none" stroke="#a855f7" stroke-width="1.5"/><line x1="38" y1="46" x2="64" y2="38" stroke="#a855f7" stroke-width="1" opacity="0.5"/><line x1="38" y1="54" x2="64" y2="62" stroke="#a855f7" stroke-width="1" opacity="0.5"/><line x1="62" y1="34" x2="62" y2="66" stroke="#a855f7" stroke-width="0.6" opacity="0.15"/></svg>`,
+  a3:`<svg viewBox="0 0 100 100"><path d="M50 16l28 16v20c0 10-8 20-28 26-20-6-28-16-28-26V32l28-16z" fill="none" stroke="#00d4ff" stroke-width="1.8"/><path d="M40 50l6 6 14-12" stroke="#22c55e" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="24" fill="none" stroke="#00d4ff" stroke-width="0.5" opacity="0.08"><animate attributeName="r" values="24;30;24" dur="3s" repeatCount="indefinite"/></circle></svg>`,
+  a4:`<svg viewBox="0 0 100 100"><path d="M30 40v30h40V40L50 18 30 40z" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linejoin="round"/><path d="M38 46l12 12 16-16" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/><circle cx="50" cy="46" r="3" fill="#f97316" opacity="0.3"><animate attributeName="r" values="3;6;3" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.6;0.3" dur="2s" repeatCount="indefinite"/></circle></svg>`,
+  backend:`<svg viewBox="0 0 100 100"><rect x="22" y="18" width="56" height="64" rx="4" fill="none" stroke="#a855f7" stroke-width="1.5"/><rect x="30" y="26" width="40" height="12" rx="2" fill="none" stroke="#a855f7" stroke-width="0.8" opacity="0.3"/><rect x="30" y="44" width="40" height="12" rx="2" fill="none" stroke="#a855f7" stroke-width="0.8" opacity="0.3"/><rect x="30" y="62" width="40" height="12" rx="2" fill="none" stroke="#a855f7" stroke-width="0.8" opacity="0.3"/><circle cx="40" cy="32" r="2" fill="#22c55e" opacity="0.4"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="40" cy="50" r="2" fill="#22c55e" opacity="0.4"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="0.5s" repeatCount="indefinite"/></circle><circle cx="40" cy="68" r="2" fill="#22c55e" opacity="0.4"><animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" begin="1s" repeatCount="indefinite"/></circle></svg>`,
+  frontend:`<svg viewBox="0 0 100 100"><rect x="16" y="16" width="68" height="48" rx="6" fill="none" stroke="#00d4ff" stroke-width="1.5"/><line x1="16" y1="36" x2="84" y2="36" stroke="#00d4ff" stroke-width="0.8" opacity="0.2"/><rect x="24" y="44" width="18" height="12" rx="2" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/><rect x="48" y="44" width="28" height="12" rx="2" fill="none" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/><rect x="24" y="22" width="52" height="8" rx="2" fill="none" stroke="#00d4ff" stroke-width="0.6" opacity="0.15"/><circle cx="30" cy="26" r="1.5" fill="#00d4ff" opacity="0.3"/><circle cx="36" cy="26" r="1.5" fill="#00d4ff" opacity="0.15"/><circle cx="42" cy="26" r="1.5" fill="#22c55e" opacity="0.3"/></svg>`,
+  sms:`<svg viewBox="0 0 100 100"><rect x="25" y="14" width="50" height="72" rx="8" fill="none" stroke="#22c55e" stroke-width="1.5"/><line x1="35" y1="46" x2="65" y2="46" stroke="#22c55e" stroke-width="0.8" opacity="0.3"/><line x1="35" y1="54" x2="58" y2="54" stroke="#22c55e" stroke-width="0.8" opacity="0.2"/><line x1="35" y1="62" x2="50" y2="62" stroke="#22c55e" stroke-width="0.8" opacity="0.1"/><circle cx="50" cy="36" r="4" fill="none" stroke="#22c55e" stroke-width="1"/><path d="M25 20h50" stroke="#22c55e" stroke-width="0.5" opacity="0.1"/></svg>`,
+  whatsapp:`<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="36" fill="none" stroke="#25D366" stroke-width="1.8"/><path d="M32 68l6-20a16 16 0 1122 22l-22 6 6-20" fill="none" stroke="#25D366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="16" fill="none" stroke="#25D366" stroke-width="0.6" opacity="0.15"><animate attributeName="r" values="16;24;16" dur="3s" repeatCount="indefinite"/></circle></svg>`,
+  telegram:`<svg viewBox="0 0 100 100"><path d="M20 48l52-24-16 52-12-20-8-8 36-24" fill="none" stroke="#0088cc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="30" fill="none" stroke="#0088cc" stroke-width="0.5" opacity="0.08"><animate attributeName="r" values="30;38;30" dur="4s" repeatCount="indefinite"/></circle></svg>`,
+  email:`<svg viewBox="0 0 100 100"><rect x="16" y="30" width="68" height="44" rx="4" fill="none" stroke="#eab308" stroke-width="1.5"/><path d="M16 36l34 20 34-20" stroke="#eab308" stroke-width="1.5" fill="none"/><line x1="16" y1="48" x2="38" y2="58" stroke="#eab308" stroke-width="0.8" opacity="0.3"/><line x1="84" y1="48" x2="62" y2="58" stroke="#eab308" stroke-width="0.8" opacity="0.3"/></svg>`,
+  commCenter:`<svg viewBox="0 0 100 100"><rect x="30" y="16" width="40" height="56" rx="6" fill="none" stroke="#22c55e" stroke-width="1.5"/><path d="M22 40l16 8 16-8" stroke="#22c55e" stroke-width="1" fill="none" opacity="0.4"/><circle cx="50" cy="38" r="4" fill="none" stroke="#22c55e" stroke-width="1.2"/><path d="M50 24v-4M50 68v-4" stroke="#22c55e" stroke-width="0.8" opacity="0.15"/><path d="M70 50q10-6 10-10q0-4-10-10M72 50l8 8" stroke="#00d4ff" stroke-width="1" opacity="0.3" stroke-linecap="round"/></svg>`
+};
+
+// === STAGE DATA ===
+const stages=[
+  {id:'attack',logo:'attack',title:'Attack Detection Engine',color:'#ef4444',colorC:'c-red',
+    sub:'Credential Stuffing Attack In Progress',
+    desc:'The Attack Detection Engine continuously monitors authentication traffic across the network perimeter. It flagged unusual login velocity from a single IP address, indicating a credential stuffing attack in progress.',
+    sections:[{h:'Purpose',b:'Monitor authentication traffic and detect abnormal login patterns'},{h:'Input',b:'Incoming SSH authentication requests from 192.168.10.54'},{h:'Output',b:'Attack alert generated with source IP and threat classification'}],
+    grid:[{l:'Source IP',v:'192.168.10.54',c:'sr'},{l:'Target',v:'admin',c:'sy'},{l:'Attempts',v:'128',c:'sr'},{l:'Attack Type',v:'Credential Stuffing',c:'sy'}],
+    badges:[{t:'Critical',c:'br'},{t:'Active Attack',c:'by'}]},
+  {id:'watcher',logo:'watcher',title:'Watcher Agent',color:'#00d4ff',colorC:'c-cyan',
+    sub:'Anomaly Detection & Monitoring',
+    desc:'The Watcher Agent continuously monitors all login events across the infrastructure. It detected repeated authentication failures exceeding the configured threshold limits and generated a security observation.',
+    sections:[{h:'Purpose',b:'Monitor real-time login events and identify anomalies'},{h:'Input',b:'128 failed login attempts across 3 usernames'},{h:'Output',b:'Security observation with anomaly classification'}],
+    grid:[{l:'Monitor',v:'Login Events',c:'sc'},{l:'Threshold Breach',v:'Yes',c:'sr'},{l:'Observation',v:'Security Alert',c:'sg'}],
+    badges:[{t:'Anomaly Confirmed',c:'bc'},{t:'Threshold Exceeded',c:'br'}]},
+  {id:'intel',logo:'intel',title:'Threat Intelligence Agent',color:'#00d4ff',colorC:'c-cyan',
+    sub:'Signature Matching & Threat Correlation',
+    desc:'Compared attack indicators against known threat signatures in the intelligence database. The pattern matched a known credential stuffing campaign with high confidence.',
+    sections:[{h:'Purpose',b:'Compare indicators against known attack signatures'},{h:'Input',b:'Suspicious login activity from IP 192.168.10.54'},{h:'Output',b:'Verified brute force pattern with confidence score'}],
+    grid:[{l:'Confidence',v:'96%',c:'sg'},{l:'Threat Category',v:'Credential Attack',c:'sy'},{l:'DB Match',v:'Confirmed',c:'sg'}],
+    badges:[{t:'Pattern Matched',c:'bg'},{t:'Threat Verified',c:'bc'}]},
+  {id:'analyzer',logo:'analyzer',title:'Risk Analyzer Agent',color:'#eab308',colorC:'c-yellow',
+    sub:'Risk Assessment & Impact Analysis',
+    desc:'Calculated the likelihood of system compromise using behavioral analysis and historical threat data. Determined that the risk threshold has exceeded critical levels.',
+    sections:[{h:'Purpose',b:'Calculate compromise probability and assess risk severity'},{h:'Input',b:'Verified threat pattern with confidence score'},{h:'Output',b:'Risk score with recommended mitigation actions'}],
+    grid:[{l:'Risk Level',v:'CRITICAL',c:'sr'},{l:'Compromise Prob.',v:'92%',c:'sr'},{l:'Risk Score',v:'9.2/10',c:'sr'}],
+    badges:[{t:'Critical Risk',c:'br'},{t:'Action Required',c:'by'}]},
+  {id:'a1',logo:'a1',title:'Agent 1 — Detection',color:'#00d4ff',colorC:'c-cyan',
+    sub:'Evidence Collection & Incident Creation',
+    desc:'Collected forensic evidence from system logs, network traffic captures, and authentication records. Created a structured incident object for downstream processing by correlation engines.',
+    sections:[{h:'Purpose',b:'Collect forensic evidence and create incident objects'},{h:'Input',b:'Raw logs and network traffic from attack session'},{h:'Output',b:'Structured incident with 12 evidence artifacts'}],
+    grid:[{l:'Evidence',v:'12 Artifacts',c:'sg'},{l:'Incident Object',v:'Created',c:'sc'}],
+    badges:[{t:'Evidence Logged',c:'bg'}]},
+  {id:'a2',logo:'a2',title:'Agent 2 — Correlation',color:'#a855f7',colorC:'c-purple',
+    sub:'Log Correlation & Sequence Validation',
+    desc:'Merged and correlated logs from 7 distributed sources across the network. Validated the complete attack sequence including timing, source, and target verification.',
+    sections:[{h:'Purpose',b:'Correlate logs across multiple sources and validate attack sequence'},{h:'Input',b:'Incident object with 12 evidence artifacts'},{h:'Output',b:'Validated attack sequence with source correlation'}],
+    grid:[{l:'Sources',v:'7 Merged',c:'sc'},{l:'Attack Sequence',v:'Validated',c:'sg'}],
+    badges:[{t:'Correlation Complete',c:'bg'}]},
+  {id:'a3',logo:'a3',title:'Agent 3 — Response',color:'#00d4ff',colorC:'c-cyan',
+    sub:'Automated Mitigation & Protection',
+    desc:'Initiated automated mitigation workflow. Blocked attacker IP address at the firewall and activated additional protection layers to prevent further intrusion attempts.',
+    sections:[{h:'Purpose',b:'Execute automated mitigation and block attack source'},{h:'Input',b:'Validated attack sequence with verified threat'},{h:'Output',b:'Blocked IP with active protection rules'}],
+    grid:[{l:'Action',v:'IP Blocked',c:'sg'},{l:'Firewall Rule',v:'Updated',c:'sc'},{l:'Protection',v:'Active',c:'sg'}],
+    badges:[{t:'IP Blocked',c:'bg'},{t:'Mitigation Active',c:'bc'}]},
+  {id:'a4',logo:'a4',title:'Agent 4 — Notification',color:'#f97316',colorC:'c-orange',
+    sub:'Alert Generation & Report Preparation',
+    desc:'Prepared a detailed incident report with comprehensive forensic data. Generated and queued alerts for all connected communication channels.',
+    sections:[{h:'Purpose',b:'Prepare incident reports and trigger alert workflows'},{h:'Input',b:'Complete incident data with mitigation results'},{h:'Output',b:'Formatted alerts for all communication channels'}],
+    grid:[{l:'Report',v:'Prepared',c:'sg'},{l:'Alert Workflow',v:'Triggered',c:'sy'}],
+    badges:[{t:'Notification Ready',c:'bg'}]},
+  {id:'backend',logo:'backend',title:'Backend Engine',color:'#a855f7',colorC:'c-purple',
+    sub:'Data Persistence & Audit Logging',
+    desc:'Persisting all incident data to secure storage. Updating threat database, creating incident ticket, and generating comprehensive audit trail for compliance.',
+    sections:[{h:'Purpose',b:'Persist incident data and maintain audit trails'},{h:'Input',b:'Complete incident report with all agent outputs'},{h:'Output',b:'Stored records with ticket and audit trail'}],
+    grid:[{l:'Logs',v:'24 Entries',c:'sg'},{l:'Database',v:'Updated',c:'sg'},{l:'Ticket ID',v:'#INC-1024',c:'sy'},{l:'Audit Trail',v:'Generated',c:'sc'}],
+    badges:[{t:'Data Persisted',c:'bg'}]},
+  {id:'frontend',logo:'frontend',title:'Frontend Dashboard',color:'#00d4ff',colorC:'c-cyan',
+    sub:'Live Security Status & Visualization',
+    desc:'Updated live security status display on the SOC dashboard. Generated interactive attack timeline with full forensic details for security team review.',
+    sections:[{h:'Purpose',b:'Display real-time security status and incident timeline'},{h:'Input',b:'Incident data from backend with all processing results'},{h:'Output',b:'Live dashboard with interactive attack visualization'}],
+    grid:[{l:'Status',v:'Updated Live',c:'sg'},{l:'Timeline',v:'Generated',c:'sc'}],
+    badges:[{t:'Dashboard Live',c:'bc'}]},
+];
+
+const ARCH_NODES=[
+  {id:'attack',label:'Attack Detection',short:'ATK'},
+  {id:'watcher',label:'Watcher Agent',short:'W'},
+  {id:'intel',label:'Threat Intel',short:'TI'},
+  {id:'analyzer',label:'Risk Analyzer',short:'RA'},
+  {id:'a1',label:'Agent 1',short:'A1'},
+  {id:'a2',label:'Agent 2',short:'A2'},
+  {id:'a3',label:'Agent 3',short:'A3'},
+  {id:'a4',label:'Agent 4',short:'A4'},
+  {id:'backend',label:'Backend',short:'BE'},
+  {id:'frontend',label:'Frontend',short:'FE'},
+  {id:'sms',label:'SMS',short:'SMS'},
+  {id:'whatsapp',label:'WhatsApp',short:'WA'},
+  {id:'telegram',label:'Telegram',short:'TG'},
+  {id:'email',label:'Email',short:'EM'},
+];
+
+const COMMS=[
+  {id:'sms',logo:'sms',name:'SMS Gateway',color:'#22c55e',
+    alerts:[{app:'Messages',title:'Security Alert',body:'Critical brute-force attack detected from 192.168.10.54. IP blocked successfully.',time:'2 min ago'},
+      {app:'Messages',title:'Alert Confirmed',body:'Attack source blocked. No further action required.',time:'1 min ago'}]},
+  {id:'whatsapp',logo:'whatsapp',name:'WhatsApp Gateway',color:'#25D366',
+    alerts:[{app:'WhatsApp',title:'CyberMate Bot',body:'Critical brute-force attack detected and mitigated. Risk: Critical. Status: Blocked.',time:'2 min ago'}]},
+  {id:'telegram',logo:'telegram',name:'Telegram Gateway',color:'#0088cc',
+    alerts:[{app:'Telegram',title:'CyberMate SOC Alert',body:'Attack Detected → Threat Verified → Risk Analyzed → Response Completed.',time:'1 min ago'}]},
+  {id:'email',logo:'email',name:'Email Gateway',color:'#eab308',
+    alerts:[{app:'Gmail',title:'Critical Security Incident Report',body:'Attack detected. Threat intelligence verified. Risk analysis completed. Automated mitigation executed successfully.',time:'just now'}]},
+];
+
+let isAuto=false,curStage=0,running=false,completedStages=[];
+
+function q(s){return document.querySelector(s)}
+function qa(s){return document.querySelectorAll(s)}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+// === PARTICLES ===
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');p.className='prt';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(20+Math.random()*30)+'s';
+    p.style.animationDelay=Math.random()*15+'s';
+    p.style.width=p.style.height=(1.5+Math.random()*3)+'px';
+    c.appendChild(p);}
+})();
+
+function startSystem(){
+  document.getElementById('land').classList.add('hide');
+  document.getElementById('mm').classList.add('show');
+}
+function backMenu(){
+  document.getElementById('main').classList.remove('show');
+  document.getElementById('final').classList.remove('show');
+  document.getElementById('scanOl').classList.remove('show');
+  document.getElementById('ns').classList.remove('show');
+  document.getElementById('mm').classList.add('show');
+  running=false;
+}
+function resetSystem(){
+  document.getElementById('main').classList.remove('show');
+  document.getElementById('final').classList.remove('show');
+  document.getElementById('scanOl').classList.remove('show');
+  document.getElementById('ns').classList.remove('show');
+  document.getElementById('mm').classList.remove('show');
+  document.getElementById('land').classList.remove('hide');
+  running=false;
+}
+
+async function normalLog(){
+  document.getElementById('mm').classList.remove('show');
+  q('#scanOl').classList.add('show');
+  await sleep(2200);
+  q('#scanOl').classList.remove('show');
+  q('#ns').classList.add('show');
+  setTimeout(()=>{q('#ns').classList.remove('show');document.getElementById('mm').classList.add('show')},3500);
+}
+
+function selectMode(){
+  document.getElementById('mm').classList.remove('show');
+  const mr=document.getElementById('stageArea');
+  mr.innerHTML=`
+  <div class="st-card show" style="max-width:500px">
+    <div class="stl" style="width:80px;height:80px">${LOGOS.commCenter}<div class="glow-ring"></div></div>
+    <h2 style="font-size:1.2rem;color:#00d4ff;font-family:'Inter',sans-serif">Select Simulation Mode</h2>
+    <div class="st-sub" style="margin-bottom:16px">Choose how to progress through the agentic pipeline</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+      <div style="width:200px;height:170px;border-radius:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,16,30,0.5);border:1px solid rgba(0,180,255,0.06);transition:all 0.3s;padding:16px" onclick="startSim(true)" onmouseover="this.style.borderColor='rgba(0,180,255,0.2)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(0,180,255,0.06)';this.style.transform=''">
+        <div style="font-size:2.2rem;margin-bottom:6px">▶</div>
+        <div style="font-size:0.9rem;font-weight:700;color:#e0ecf8">Auto Mode</div>
+        <div style="font-size:0.6rem;color:#5a7a9a;margin-top:4px;text-align:center">Stages advance automatically every 5s</div>
+      </div>
+      <div style="width:200px;height:170px;border-radius:14px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,16,30,0.5);border:1px solid rgba(0,180,255,0.06);transition:all 0.3s;padding:16px" onclick="startSim(false)" onmouseover="this.style.borderColor='rgba(0,180,255,0.2)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(0,180,255,0.06)';this.style.transform=''">
+        <div style="font-size:2.2rem;margin-bottom:6px">👆</div>
+        <div style="font-size:0.9rem;font-weight:700;color:#e0ecf8">Manual Mode</div>
+        <div style="font-size:0.6rem;color:#5a7a9a;margin-top:4px;text-align:center">Use NEXT button to advance through stages</div>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('main').classList.add('show');
+}
+
+async function startSim(auto){
+  isAuto=auto;curStage=0;running=true;completedStages=[];
+  document.getElementById('archNodes').innerHTML='';
+  document.getElementById('final').classList.remove('show');
+  await showStage(curStage);
+}
+
+async function showStage(idx){
+  if(idx>=stages.length){await showComms();return;}
+  const s=stages[idx];
+  const mr=document.getElementById('stageArea');
+  let secHtml='',gridHtml='',badgeHtml='';
+  if(s.sections) s.sections.forEach(x=>{secHtml+=`<div class="st-sec"><div class="ss-h">${x.h}</div><div class="ss-b">${x.b}</div></div>`});
+  if(s.grid) s.grid.forEach(g=>{gridHtml+=`<div class="st-item"><div class="si-l">${g.l}</div><div class="si-v ${g.c||''}">${g.v}</div></div>`});
+  if(s.badges) s.badges.forEach(b=>{badgeHtml+=`<span class="st-bd ${b.c}">${b.t}</span>`});
+  mr.innerHTML=`
+  <div class="st-card show" id="sc_${idx}">
+    <div class="stl">${LOGOS[s.logo]}<div class="glow-ring"></div></div>
+    <h2 style="color:${s.color}">${s.title}</h2>
+    <div class="st-sub">${s.sub}</div>
+    <div class="st-desc" style="font-size:0.82rem;color:#8aaaca;max-width:560px;line-height:1.5;margin-bottom:6px">${s.desc}</div>
+    <div class="st-sections">${secHtml}</div>
+    <div class="st-grid">${gridHtml}</div>
+    <div class="st-badges">${badgeHtml}</div>
+    <div class="st-act">
+      ${isAuto?'<span style="font-size:0.6rem;color:#4a6a8a">Auto-advancing in 5s...</span>':
+        `<button style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.12);color:#00d4ff" onclick="nextStage()">Next Stage →</button>`}
+    </div>
+  </div>`;
+  if(isAuto&&idx<stages.length){await sleep(5000);if(running){curStage++;showStage(curStage)}}
+}
+
+function nextStage(){
+  if(!running)return;
+  // animate exit
+  const card=document.getElementById('sc_'+curStage);
+  if(card){card.classList.remove('show');card.classList.add('exit')}
+  // add to left architecture
+  addToArchitecture(curStage);
+  setTimeout(()=>{
+    curStage++;
+    if(curStage>=stages.length){showComms();return;}
+    showStage(curStage);
+  },600);
+}
+
+function addToArchitecture(idx){
+  const s=stages[idx];
+  const container=document.getElementById('archNodes');
+  const node=document.createElement('div');node.className='arch-node';node.id='an_'+s.id;
+  node.innerHTML=`<div class="ad green">${LOGOS[s.logo]}</div><div class="al">${s.title}<div class="al-sub">${s.sub}</div></div>`;
+  container.appendChild(node);
+  requestAnimationFrame(()=>node.classList.add('show'));
+  // add connector below
+  const conn=document.createElement('div');conn.className='arch-conn';conn.id='ac_'+s.id;
+  conn.innerHTML=`<div class="ac-line"></div><div class="ac-glow" id="acg_${s.id}"></div><div class="ac-dot" style="display:none" id="acd_${s.id}"></div>`;
+  container.appendChild(conn);
+  requestAnimationFrame(()=>conn.classList.add('show'));
+  setTimeout(()=>{
+    const g=document.getElementById('acg_'+s.id);if(g)g.classList.add('active');
+    const d=document.getElementById('acd_'+s.id);if(d)d.style.display='block';
+  },300);
+  completedStages.push(s.id);
+}
+
+async function showComms(){
+  const mr=document.getElementById('stageArea');
+  mr.innerHTML=`
+  <div class="st-card show">
+    <div class="stl">${LOGOS.commCenter}<div class="glow-ring"></div></div>
+    <h2 style="color:#22c55e;font-size:1.2rem">Communication Center</h2>
+    <div class="st-sub">Alerts Dispatched Through All Channels</div>
+    <div class="comm-layout">
+      <div class="cl-info">
+        <div class="ci-title">Multi-Channel Alert Dispatch</div>
+        <div class="ci-sub">Real-time notifications across all platforms</div>
+        <div class="ci-items">
+          <div class="ci-item" style="--ac:#22c55e"><div class="ci-label">SMS</div>Alert sent to registered mobile number</div>
+          <div class="ci-item" style="--ac:#25D366"><div class="ci-label">WhatsApp</div>Message delivered via WhatsApp Business API</div>
+          <div class="ci-item" style="--ac:#0088cc"><div class="ci-label">Telegram</div>Alert published to SOC channel</div>
+          <div class="ci-item" style="--ac:#eab308"><div class="ci-label">Email</div>Incident report sent to security team</div>
+        </div>
+      </div>
+      <div class="phone-wrap">
+        <div class="phone">
+          <div class="ps"></div>
+          <div class="psc">
+            <div class="ps-time" id="phoneTime">12:00</div>
+            <div id="phoneNotifs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="st-act" style="margin-top:2px">
+      ${isAuto?'<span style="font-size:0.6rem;color:#4a6a8a">Auto-advancing in 4s...</span>':
+        `<button style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.12);color:#22c55e" onclick="showArchitecture()">View Architecture →</button>`}
+    </div>
+  </div>`;
+  document.getElementById('phoneTime').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  await animatePhoneNotifs();
+  if(isAuto){await sleep(4000);showArchitecture()}
+}
+
+async function animatePhoneNotifs(){
+  const container=document.getElementById('phoneNotifs');
+  const allAlerts=[];
+  COMMS.forEach(c=>c.alerts.forEach(a=>allAlerts.push({...a,app:c.app})));
+  for(let i=0;i<allAlerts.length;i++){
+    await sleep(600+i*200);
+    if(!running)break;
+    const n=allAlerts[i];
+    const el=document.createElement('div');el.className='notif';
+    el.innerHTML=`<div class="nt-app">${n.app}</div><div class="nt-title">${n.title}</div><div class="nt-body">${n.body}</div><div class="nt-time">${n.time}</div>`;
+    container.appendChild(el);
+    container.scrollTop=container.scrollHeight;
+  }
+}
+
+function showArchitecture(){
+  // Add remaining stages to architecture
+  for(let i=completedStages.length;i<stages.length;i++){
+    addToArchitecture(i);
+  }
+  document.getElementById('main').classList.remove('show');
+  const final=document.getElementById('final');
+  final.classList.add('show');
+  const arch=document.getElementById('finalArch');
+  arch.innerHTML='';
+  ARCH_NODES.forEach((n,i)=>{
+    const node=document.createElement('div');node.className='fn';node.id='fn_'+n.id;
+    const logo=LOGOS[n.id]||'';
+    node.innerHTML=`<div class="fnb done">${logo}</div><div class="fnl">${n.label}</div>`;
+    arch.appendChild(node);
+    if(i<ARCH_NODES.length-1){
+      const a=document.createElement('div');a.className='farw';a.id='fw_'+(i+1);
+      a.innerHTML=`<div class="fat"><div class="faf"></div></div><div class="fah"></div>`;
+      arch.appendChild(a);
+    }
+    setTimeout(()=>node.classList.add('show'),i*100);
+    setTimeout(()=>{const x=document.getElementById('fw_'+(i+1));if(x)x.classList.add('show')},(i+1)*100+50);
+  });
+  // Counters
+  const info=document.getElementById('finalInfo');
+  info.innerHTML='';
+  const cData=[
+    {l:'Detection Time',v:'2.3s'},{l:'Verification Time',v:'1.8s'},
+    {l:'Response Time',v:'3.1s'},{l:'Notification Time',v:'1.6s'}
+  ];
+  cData.forEach(d=>{
+    const el=document.createElement('div');el.className='fi';
+    el.innerHTML=`<div class="fi-l">${d.l}</div><div class="fi-v">${d.v}</div>`;
+    info.appendChild(el);
+  });
+}
+</script>
+</body>
+</html>
