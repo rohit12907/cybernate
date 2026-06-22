@@ -197,16 +197,8 @@ def reset_all():
     return {"success": True, "message": "All alerts cleared"}
 
 if _name_ == "_main_":
-    import os
     import uvicorn
-
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=int(os.getenv("PORT", 8000))
-    )
-
-
+    uvicorn.run("main:app", host=settings.HOST, port=settings.PORT, reload=True)
 
 
 
