@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import React from "react";
 import markup from "./cybermate-markup.html?raw";
 import engineScript from "./cybermate-engine.js?raw";
 import {
