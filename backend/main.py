@@ -141,33 +141,36 @@ def get_threats(limit: int = 20, severity: str = "all", offset: int = 0):
 # ---------------------------------------------------------------------------
 @app.post("/api/alert/send", response_model=AlertSendResponse)
 def send_alert(req: AlertSendRequest):
+    if req.channel == "telegram":
+        result = send_telegram_alert(req.message)
+        if not result.get("success"):
+            # fallback to email automatically
+            result = send_email_alert(req.message)
+            channel_used = "email"
+        else:
+            channel_used = "telegram"
+    else:
+        result = send_email_alert(req.message)
+        channel_used = "email"
 
-    telegram_result = send_telegram_alert(req.message)
-    email_result = send_email_alert(req.message)
-
-    success = (
-        telegram_result.get("success") or
-        email_result.get("success")
-    )
-
-    if success:
-
-        db.mark_delivered(req.alert_id, "telegram,email")
-
+    if result.get("success"):
+        db.mark_delivered(req.alert_id, channel_used)
         return AlertSendResponse(
             success=True,
             alert_id=req.alert_id,
-            channel="telegram,email",
+            channel=channel_used,
+            message_id=result.get("message_id"),
             delivered_at=datetime.utcnow().isoformat() + "Z",
-            status="sent"
+            status="sent",
+        )
+    else:
+        return AlertSendResponse(
+            success=False,
+            alert_id=req.alert_id,
+            channel=channel_used,
+            status=f"failed: {result.get('error')}",
         )
 
-    return AlertSendResponse(
-        success=False,
-        alert_id=req.alert_id,
-        channel="telegram,email",
-        status="failed"
-    )
 
 # ---------------------------------------------------------------------------
 # 5. GET /api/health
